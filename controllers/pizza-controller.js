@@ -8,7 +8,7 @@ const pizzaController = {
     // get all pizzas
     getAllPizza(req, res) {
         Pizza.find({})
-        .then(dbPizzaData => res.jeson(dbPizzaData))
+        .then(dbPizzaData => res.json(dbPizzaData))
         .catch(err => {
             console.log(err);
             res.status(400).json(err)
@@ -43,7 +43,7 @@ const pizzaController = {
     // .findOneAndUpdate() method Mongoose finds a single document we want to update, then updates it and returns the updated document.
     // by setting the parmeter to ture, we're instucting mongoose to return the new version of the ducment.
     updatePizza({params,body}, res) {
-        pizzaFindOneAndUpdate({_id: params.id}, body, {new:true})
+        Pizza.findOneAndUpdate({_id: params.id}, body, {new:true})
         .then(dbPizzaData => {
             if(!dbPizzaData) {
                 res.status(404).json({message:'No pizza found with this id!'});

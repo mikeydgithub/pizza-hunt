@@ -13,14 +13,14 @@ app.use(require('./routes'));
 
 // set up mongoose to connect when we start the app.
 // mongoose.connect tells us which databse to connect to. if the MONGODB_URI database exists, like on heroku it will use that. \
-// otherwise, it will short circuit to the serves databases 'mongodb://localhost:27017/pizza-hunt'
+// otherwise, it will short circuit to the serves databases 'mongodb://127.0.0.1:27017/pizza-hunt'
 // mongoose can find a database that exists or creates a new one.
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/pizza-hunt', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/pizza-hunt', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 });
 
-// use this to log mango queries being executed!
-mongoose.set('debug', true)
+// Use this to log mongo queries being executed!
+mongoose.set('debug', true);
 
 app.listen(PORT, () => console.log(`🌍 Connected on localhost:${PORT}`));
