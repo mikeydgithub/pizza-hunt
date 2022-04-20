@@ -8,6 +8,15 @@ const pizzaController = {
     // get all pizzas
     getAllPizza(req, res) {
         Pizza.find({})
+        .populate({
+            path: 'comments',
+            // the minus sign in the select option says that we dont want it if it's returned.
+            select: '-__v'
+        })
+        // update the query to not include the pizza's __v field either
+        .select('-__v')
+        // sort in a descending order by its _id value so the newest pizza returns first.
+        .sort({_id: -1})
         .then(dbPizzaData => res.json(dbPizzaData))
         .catch(err => {
             console.log(err);
@@ -18,6 +27,11 @@ const pizzaController = {
     // get one pizza by id
     getPizzaById({params}, res) {
         Pizza.findOne({_id: params.id})
+        .populate({
+            path: 'comments',
+            select: '-__v'
+        })
+        .select('-__v')
         .then(dbPizzaData => {
             // if no pizza is found, send 404
             if (!dbPizzaData) {
@@ -41,7 +55,7 @@ const pizzaController = {
 
     // update pizza by id
     // .findOneAndUpdate() method Mongoose finds a single document we want to update, then updates it and returns the updated document.
-    // by setting the parmeter to ture, we're instucting mongoose to return the new version of the ducment.
+    // by setting the parmeter to true, we're instucting mongoose to return the new version of the document.
     updatePizza({params,body}, res) {
         Pizza.findOneAndUpdate({_id: params.id}, body, {new:true})
         .then(dbPizzaData => {

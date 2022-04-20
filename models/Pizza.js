@@ -1,5 +1,7 @@
 // import dependancies
 const { Schema, model } = require('mongoose');
+const dateFormat = require('../utils/dateFormat');
+
 
 // create the schema for the model
 const PizzaSchema = new Schema(
@@ -12,7 +14,8 @@ const PizzaSchema = new Schema(
         },
         createdAt: {
             type: Date,
-            default: Date.now
+            default: Date.now,
+            get: (createdAtVal) => dateFormat(createdAtVal)
         },
         size: {
             type: String,
@@ -32,6 +35,7 @@ const PizzaSchema = new Schema(
     {
     toJSON: {
         virutals: true,
+        getters: true
     },
     // set id to false bcause this is a virtual that mongoose returns and we don't need it.
     id: false
@@ -40,7 +44,7 @@ const PizzaSchema = new Schema(
 
 // get total count of comments and replies on retrieval
 // virtual properties
-PizzaSchema.vitual('comment').get(function() {
+PizzaSchema.virtual('Comment').get(function() {
     return this.comments.length;
 });
 

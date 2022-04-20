@@ -28,7 +28,7 @@ const commentController = {
 
     //remove comment. only requires the params and not a body since we can remove it with just an id.
     removeComment({ params }, res) {
-        Comment.findOneAndDelete({_id: params.commenId })
+        Comment.findOneAndDelete({_id: params.commentId })
         .then(deletedComment => {
             if(!deletedComment) {
                 return res.status(404).json({message: 'No comment with this id!'});
