@@ -12,7 +12,7 @@ const request = indexedDB.open('pizza_hunt', 1);
 
 // Add the object store. The containter that stores the data
 
-//this event will emit if the database version changes (nonexistant to version 1, v1 to v2, etc..)
+// this event will emit if the database version changes (nonexistant to version 1, v1 to v2, etc..)
 // on-upgraded-needed
 request.onupgradeneeded = function(event) {
     // save a refernce to the database
