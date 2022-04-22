@@ -69,6 +69,8 @@ const handlePizzaSubmit = event => {
   })
   .catch(err => {
     console.log(err);
+    // now when pizzas are created without internet, the data will be stored in the object stores database
+    saveRecord(formData);
   })
 };
 
