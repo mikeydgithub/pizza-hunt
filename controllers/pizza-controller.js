@@ -25,29 +25,29 @@ const pizzaController = {
     },
 
     // get one pizza by id
-    getPizzaById({params}, res) {
-        Pizza.findOne({_id: params.id})
+    getPizzaById({ params }, res) {
+        Pizza.findOne({ _id: params.id })
+        // .populate takes the relationship from comments here. Shown as the path to the comments.
         .populate({
             path: 'comments',
+            // '-__v' is a minus symbol to remove the version from the request.
             select: '-__v'
         })
         .select('-__v')
-        .then(dbPizzaData => {
+        .then(dbPizzaData => res.json(dbPizzaData)) 
             // if no pizza is found, send 404
-            if (!dbPizzaData) {
-                res.status(404).json({message: 'No pizza found with this id!'})
-                return;
-            }
-            res.json(dbPizzaData);
-        })
+            // if (!dbPizzaData) {
+            //     res.status(404).json({message: 'No pizza found with this id!'})
+            //     return;
+            // }
         .catch(err => {
             console.log(err);
             res.status(400).json(err);
-        });
+        })    
     },
 
     // createPizza
-    createPizza({body}, res) {
+    createPizza({ body }, res) {
         Pizza.create(body)
         .then(dbPizzaData => res.json(dbPizzaData))
         .catch(err => res.status(400).json(err));
@@ -56,8 +56,8 @@ const pizzaController = {
     // update pizza by id
     // .findOneAndUpdate() method Mongoose finds a single document we want to update, then updates it and returns the updated document.
     // by setting the parmeter to true, we're instucting mongoose to return the new version of the document.
-    updatePizza({params,body}, res) {
-        Pizza.findOneAndUpdate({_id: params.id}, body, {new:true})
+    updatePizza({ params, body }, res) {
+        Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true })
         .then(dbPizzaData => {
             if(!dbPizzaData) {
                 res.status(404).json({message:'No pizza found with this id!'});
@@ -69,15 +69,9 @@ const pizzaController = {
     },
 
     // delete pizza
-    deletePizza({params}, res) {
+    deletePizza({ params }, res) {
         Pizza.findOneAndDelete({_id: params.id})
-        .then(dbPizzaData => {
-            if(!dbPizzaData) {
-                res.status(404).json({message: 'No pizza found with this id!'});
-                return;
-            }
-            res.json(dbPizzaData);
-        })
+        .then(dbPizzaData => res.json(dbPizzaData))
         .catch(err => res.status(400).json(err));
     }
 }
